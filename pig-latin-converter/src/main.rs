@@ -4,30 +4,21 @@ use std::collections::HashSet;
 
 
 fn convert_string(input: String) -> String {
-    let words: Vec<&str> = input.split(' ').collect();
-
-    let mut result_vec: Vec<&str> = Vec::new();
+    let mut words: Vec<String> = input.split_whitespace().map(|w| String::from(w)).collect::<Vec<String>>();
 
     let vowel_set: HashSet<&'static str> = [ "a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "1", "2", "3", "4", "5", "6", "7", "8", "9" ].iter().cloned().collect();
 
-    let mut result_word = String::new();
-
-    for word in words {
+    for word in &mut words {
         let (letter, rest_of_word) = word.split_at(1);
 
         if vowel_set.contains(letter) {
-            result_word.push_str(word);
-            result_word.push_str("hay");
+            word.push_str("hay");
         } else {
-            result_word.push_str(rest_of_word);
-            result_word.push_str(letter);
-            result_word.push_str("ay");
+            *word = format!("{}{}ay", rest_of_word, letter);
         };
-        
-        result_vec.push(&result_word);
-
     }
-    return result_vec.join(" ");
+    
+    words.join(" ")
 }
 
 fn main() {
